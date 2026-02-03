@@ -1,0 +1,62 @@
+{
+  "steps": [
+    {
+      "step": 1,
+      "action": "访问首页",
+      "status": "✅ 成功",
+      "screenshot": "step1-homepage.png",
+      "details": "页面标题: Aether Studio",
+      "url": "http://127.0.0.1:3000/"
+    },
+    {
+      "step": 2,
+      "action": "点击\"企业团队\"链接",
+      "status": "✅ 成功",
+      "details": "已点击导航链接",
+      "url": "http://127.0.0.1:3000/"
+    },
+    {
+      "step": 3,
+      "action": "TeamPage 加载验证",
+      "status": "✅ 成功",
+      "screenshot": "step3-teampage.png",
+      "details": "页面标题: Aether Studio",
+      "url": "http://127.0.0.1:3000/"
+    },
+    {
+      "step": 4,
+      "action": "测试锚点导航",
+      "status": "✅ 部分成功",
+      "details": [
+        {
+          "name": "关于",
+          "status": "⚠️ 未找到",
+          "selector": null,
+          "screenshot": null
+        },
+        {
+          "name": "团队",
+          "status": "✅ 成功",
+          "selector": "a[href=\"#team\"]",
+          "screenshot": "step4-anchor-团队.png"
+        },
+        {
+          "name": "联系",
+          "status": "✅ 成功",
+          "selector": "a[href=\"#contact\"]",
+          "screenshot": "step4-anchor-联系.png"
+        }
+      ],
+      "url": "http://127.0.0.1:3000/#contact"
+    },
+    {
+      "step": 5,
+      "action": "点击 Logo 返回首页",
+      "status": "⚠️ 直接导航",
+      "screenshot": "step5-back-to-home.png",
+      "details": "返回首页: Aether Studio",
+      "url": "http://127.0.0.1:3000/"
+    }
+  ],
+  "success": true
+}

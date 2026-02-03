@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans bg-black text-white overflow-x-hidden antialiased;
+  }
+}
+
+/* --- Scrollbar Hiding --- */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* 核心蓝色 - 企业级 */
+:root {
+  --primary-blue: #0066FF;
+  --deep-blue: #0033CC;
+  --glow-blue: rgba(0, 102, 255, 0.4);
+}
+
+/* 底部光晕 */
+.hero-glow {
+  background: radial-gradient(circle at 50% 100%, var(--primary-blue) 0%, transparent 70%);
+  opacity: 0.6;
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+/* 玻璃卡片 */
+.tech-card {
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* 文本高亮 */
+.text-highlight {
+  color: var(--primary-blue);
+}
+
+/* 斜杠装饰 */
+.slash::after {
+  content: '/';
+  color: var(--primary-blue);
+  margin-left: 0.5rem;
+  font-weight: 300;
+}
+
+/* 动画优化 */
+@keyframes shimmer-flow {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.animate-flow {
+  animation: shimmer-flow 3s infinite linear;
+}
