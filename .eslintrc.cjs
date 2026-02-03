@@ -8,7 +8,7 @@ module.exports = {
         'plugin:react-hooks/recommended',
         'prettier',
     ],
-    ignorePatterns: ['dist', '.eslintrc.cjs'],
+    ignorePatterns: ['dist', 'dev-dist', 'playwright-report', 'test-results', '.eslintrc.cjs'],
     parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',

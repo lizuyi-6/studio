@@ -1,0 +1,20 @@
+# 构建输出
+dist/
+dev-dist/
+build/
+
+# 测试输出
+playwright-report/
+test-results/
+coverage/
+
+# Node modules
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# 其他
+*.log
+.DS_Store
