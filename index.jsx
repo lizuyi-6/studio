@@ -160,15 +160,18 @@ const IsometricProcess = () => {
                 />
 
                 {/* 移动的数据包 */}
-                <motion.circle
-                    cx="250"
-                    cy="200"
-                    r="4"
-                    fill="#0066FF"
-                    filter="url(#iso-glow)"
-                    animate={{ cx: [250, 550], opacity: [0, 1, 0] }}
+                <motion.g
+                    animate={{ x: [0, 300], opacity: [0, 1, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                />
+                >
+                    <circle
+                        cx="250"
+                        cy="200"
+                        r="4"
+                        fill="#0066FF"
+                        filter="url(#iso-glow)"
+                    />
+                </motion.g>
 
                 {/* 左侧：暗色立方体 (传感器/硬件) */}
                 <g transform="translate(150, 150)">

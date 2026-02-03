@@ -25,15 +25,10 @@ export const DataFlowTop = memo(() => (
 
       {/* 移动的数据点 */}
       {[...Array(3)].map((_, i) => (
-        <motion.circle
+        <motion.g
           key={i}
-          cx="0"
-          cy="1"
-          r="3"
-          fill="#00D4FF"
-          initial={{ cx: 0, cy: 1 }}
           animate={{
-            cx: [0, '100%'],
+            x: [0, 800],
             opacity: [0, 1, 1, 0]
           }}
           transition={{
@@ -42,7 +37,14 @@ export const DataFlowTop = memo(() => (
             delay: i * 1.5,
             ease: "linear"
           }}
-        />
+        >
+          <circle
+            cx="0"
+            cy="1"
+            r="3"
+            fill="#00D4FF"
+          />
+        </motion.g>
       ))}
     </svg>
   </div>
@@ -354,9 +356,10 @@ export const CircuitDecoration = memo(({ position = 'left' }) => {
             r="4"
             fill="#00D4FF"
             animate={{
-              cy: [y, y + 20, y],
+              y: [0, 20, 0],
               opacity: [1, 0.5, 0]
             }}
+            style={{ transformOrigin: `40px ${y}px` }}
             transition={{
               duration: 3,
               repeat: Infinity,
