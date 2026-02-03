@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 
 // 顶部数据流动画
@@ -93,14 +93,17 @@ CornerDecoration.displayName = 'CornerDecoration';
 
 // 浮动的技术图标
 export const FloatingTechIcon = memo(({ x, y, size = 24, delay = 0 }) => {
-  const icons = [
-    // 芯片
-    <rect x="-8" y="-8" width="16" height="16" rx="2" fill="none" stroke="#0066FF" strokeWidth="1.5" />,
-    // 电路节点
-    <circle cx="0" cy="0" r="6" fill="none" stroke="#00D4FF" strokeWidth="1.5" />,
-    // 数据点
-    <circle cx="0" cy="0" r="3" fill="#0066FF" />
-  ];
+  // 使用函数返回图标而不是数组，避免 lint 警告
+  const getRandomIcon = () => {
+    const random = Math.floor(Math.random() * 3);
+    if (random === 0) {
+      return <rect x="-8" y="-8" width="16" height="16" rx="2" fill="none" stroke="#0066FF" strokeWidth="1.5" />;
+    } else if (random === 1) {
+      return <circle cx="0" cy="0" r="6" fill="none" stroke="#00D4FF" strokeWidth="1.5" />;
+    } else {
+      return <circle cx="0" cy="0" r="3" fill="#0066FF" />;
+    }
+  };
 
   return (
     <motion.div
@@ -120,7 +123,7 @@ export const FloatingTechIcon = memo(({ x, y, size = 24, delay = 0 }) => {
       }}
     >
       <svg width={size} height={size} viewBox="-12 -12 24 24">
-        {icons[Math.floor(Math.random() * icons.length)]}
+        {getRandomIcon()}
       </svg>
     </motion.div>
   );
@@ -262,7 +265,7 @@ HUDIndicator.displayName = 'HUDIndicator';
 
 // 粒子效果
 export const ParticleField = memo(({ count = 20, className = '' }) => {
-  const particles = Array.from({ length: count }, (_, i) => ({
+  const particles = Array.from({ length: count }, () => ({
     x: Math.random() * 100,
     y: Math.random() * 100,
     size: Math.random() * 3 + 1,

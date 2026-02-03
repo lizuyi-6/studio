@@ -24,5 +24,6 @@ module.exports = {
             { allowConstantExport: true },
         ],
         'react/prop-types': 'off', // Lucide icons commonly trigger this
+        'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }], // 允许以 _ 开头的未使用参数
     },
 }

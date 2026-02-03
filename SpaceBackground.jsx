@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 
 // 星球组件
@@ -134,7 +134,7 @@ ShootingStar.displayName = 'ShootingStar';
 // 主背景组件
 export const SpaceBackground = memo(() => {
   // 30个星星
-  const stars = Array.from({ length: 30 }, (_, i) => ({
+  const stars = Array.from({ length: 30 }, () => ({
     x: `${Math.random() * 100}%`,
     y: `${Math.random() * 100}%`,
     size: 8 + Math.random() * 12,

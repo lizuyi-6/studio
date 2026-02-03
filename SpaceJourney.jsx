@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState, useRef } from 'react';
+import { memo, useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 // 动态星球组件 - 随滚动位置运动
@@ -9,7 +9,7 @@ const DynamicPlanet = memo(({
   color,
   scrollSpeed = 1,
   parallaxX = 0,
-  parallaxY = 0,
+  _parallaxY = 0,  // 添加下划线前缀表示有意未使用（保留为 API 兼容性）
   rotationDuration = 30,
   hasGlow = true,
   hasRing = false
@@ -134,7 +134,7 @@ const DynamicPlanet = memo(({
 DynamicPlanet.displayName = 'DynamicPlanet';
 
 // 星云效果组件
-const Nebula = memo(({ x, y, size, color, scrollSpeed = 0.5 }) => {
+const Nebula = memo(({ x, y, size, color, _scrollSpeed = 0.5 }) => {
   const { scrollY } = useScroll();
 
   const opacity = useTransform(scrollY, [0, 1000, 2000], [0.3, 0.5, 0.1]);
