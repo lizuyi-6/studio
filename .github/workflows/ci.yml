@@ -143,57 +143,53 @@ jobs:
           retention-days: 7
 
   # ==================== 部署阶段（仅main分支）====================
-  deploy:
-    name: 🚀 Deploy
-    runs-on: ubuntu-latest
-    needs: [build, e2e]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
-          path: dist/
-
-      - name: 🚀 Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: ./
-
-      # 或者部署到Netlify（备选方案）
-      # - name: 🚀 Deploy to Netlify
-      #   uses: nwtgck/actions-netlify@v2.1
-      #   with:
-      #     publish-dir: './dist'
-      #     production-branch: main
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     deploy-message: "Deploy from GitHub Actions"
-      #   env:
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+  # 部署步骤已禁用 - 如需启用，请配置以下 GitHub Secrets:
+  # - VERCEL_TOKEN
+  # - VERCEL_ORG_ID
+  # - VERCEL_PROJECT_ID
+  # 然后取消下面的注释
+  #
+  # deploy:
+  #   name: 🚀 Deploy
+  #   runs-on: ubuntu-latest
+  #   needs: [build, e2e]
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #
+  #   steps:
+  #     - name: 📥 Checkout code
+  #       uses: actions/checkout@v4
+  #
+  #     - name: 📦 Download build artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: build-artifacts
+  #         path: dist/
+  #
+  #     - name: 🚀 Deploy to Vercel
+  #       uses: amondnet/vercel-action@v25
+  #       with:
+  #         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  #         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+  #         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+  #         vercel-args: '--prod'
+  #         working-directory: ./
 
   # ==================== 通知阶段 ====================
-  notify:
-    name: 📢 Notify
-    runs-on: ubuntu-latest
-    needs: [deploy]
-    if: always()
-
-    steps:
-      - name: 📢 Send notification
-        run: |
-          if [ "${{ needs.deploy.result }}" == "success" ]; then
-            echo "✅ Deployment successful!"
-            # 这里可以添加Slack/Email等通知
-          else
-            echo "❌ Deployment failed!"
-            # 这里可以添加失败通知
-          fi
+  # 通知步骤已禁用 - 依赖部署阶段
+  #
+  # notify:
+  #   name: 📢 Notify
+  #   runs-on: ubuntu-latest
+  #   needs: [deploy]
+  #   if: always()
+  #
+  #   steps:
+  #     - name: 📢 Send notification
+  #       run: |
+  #         if [ "${{ needs.deploy.result }}" == "success" ]; then
+  #           echo "✅ Deployment successful!"
+  #           # 这里可以添加Slack/Email等通知
+  #         else
+  #           echo "❌ Deployment failed!"
+  #           # 这里可以添加失败通知
+  #         fi
