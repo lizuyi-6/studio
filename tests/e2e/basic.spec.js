@@ -43,12 +43,12 @@ test.describe('Aether Studio - Basic Functionality Tests', () => {
     await page.click('text=技术栈');
     await page.waitForTimeout(500);
 
-    // 检查技术栈标题
-    const heading = page.locator('text=Engineering Stack');
+    // 检查技术栈标题（使用实际的中文标题）
+    const heading = page.locator('text=技术武器库');
     await expect(heading).toBeVisible({ timeout: 5000 });
 
-    // 检查技术卡片存在（使用文本内容检查）
-    const techCard = page.locator('text=核心基础');
+    // 检查技术卡片存在（使用英文卡片标题）
+    const techCard = page.locator('text=Core Foundations');
     await expect(techCard).toBeVisible({ timeout: 5000 });
   });
 
