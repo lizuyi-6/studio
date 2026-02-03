@@ -161,12 +161,13 @@ const IsometricProcess = () => {
 
                 {/* 移动的数据包 */}
                 <motion.circle
+                    cx="250"
+                    cy="200"
                     r="4"
                     fill="#0066FF"
                     filter="url(#iso-glow)"
                     animate={{ cx: [250, 550], opacity: [0, 1, 0] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    cy="200"
                 />
 
                 {/* 左侧：暗色立方体 (传感器/硬件) */}
@@ -258,15 +259,15 @@ const NetworkDiagram = () => (
 
                 {/* 标签节点 - 呼吸灯 */}
                 <g transform="translate(-150, -20)">
-                    <motion.circle r="4" fill="#0066FF" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} />
+                    <motion.circle cx="0" cy="0" r="4" fill="#0066FF" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} />
                     <text x="0" y="-15" textAnchor="middle" fill="#AAA" fontSize="12">Firmware</text>
                 </g>
                 <g transform="translate(150, -20)">
-                    <motion.circle r="4" fill="#0066FF" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, delay: 0.5, repeat: Infinity }} />
+                    <motion.circle cx="0" cy="0" r="4" fill="#0066FF" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, delay: 0.5, repeat: Infinity }} />
                     <text x="0" y="-15" textAnchor="middle" fill="#AAA" fontSize="12">Middleware</text>
                 </g>
                 <g transform="translate(0, 160)">
-                    <motion.circle r="4" fill="#0066FF" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, delay: 1, repeat: Infinity }} />
+                    <motion.circle cx="0" cy="0" r="4" fill="#0066FF" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, delay: 1, repeat: Infinity }} />
                     <text x="0" y="20" textAnchor="middle" fill="#AAA" fontSize="12">Interface</text>
                 </g>
             </g>
@@ -1386,4 +1387,4 @@ export default function App() {
 
         </div>
     );
-}
+} 

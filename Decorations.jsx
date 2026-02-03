@@ -27,6 +27,8 @@ export const DataFlowTop = memo(() => (
       {[...Array(3)].map((_, i) => (
         <motion.circle
           key={i}
+          cx="0"
+          cy="1"
           r="3"
           fill="#00D4FF"
           initial={{ cx: 0, cy: 1 }}
@@ -377,28 +379,32 @@ export const RippleEffect = memo(({ x, y, delay = 0 }) => {
       className="absolute pointer-events-none z-20"
       style={{ left: x, top: y }}
     >
-      {[...Array(3)].map((_, i) => (
-        <motion.circle
-          key={i}
-          r="20"
-          fill="none"
-          stroke="#0066FF"
-          strokeWidth="1.5"
-          opacity={0.7 - i * 0.2}
-          initial={{ scale: 0, opacity: 0.5 }}
-          animate={{
-            scale: [0, 2, 2],
-            opacity: [0.5, 0, 0]
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            delay: delay + i * 0.5,
-            ease: "easeOut"
-          }}
-          style={{ transformOrigin: 'center' }}
-        />
-      ))}
+      <svg width="100" height="100" viewBox="0 0 100 100" style={{ overflow: 'visible' }}>
+        {[...Array(3)].map((_, i) => (
+          <motion.circle
+            key={i}
+            cx="50"
+            cy="50"
+            r="20"
+            fill="none"
+            stroke="#0066FF"
+            strokeWidth="1.5"
+            opacity={0.7 - i * 0.2}
+            initial={{ scale: 0, opacity: 0.5 }}
+            animate={{
+              scale: [0, 2, 2],
+              opacity: [0.5, 0, 0]
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              delay: delay + i * 0.5,
+              ease: "easeOut"
+            }}
+            style={{ transformOrigin: 'center' }}
+          />
+        ))}
+      </svg>
     </motion.div>
   );
 });
