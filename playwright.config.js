@@ -22,7 +22,7 @@ export default defineConfig({
 
   // 启动开发服务器
   webServer: {
-    command: 'npm run dev',
+    command: 'npm run dev -- --port 3005',
     url: 'http://127.0.0.1:3005',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
