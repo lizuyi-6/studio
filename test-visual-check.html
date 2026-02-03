@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>手动测试页面</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .test-box {
+      position: fixed;
+      top: 100px;
+      left: 100px;
+      z-index: 9999;
+      background: yellow;
+      color: black;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      border: 5px solid red;
+    }
+    .info {
+      margin-top: 200px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-box">内联样式测试</div>
+
+  <div class="info">
+    <h1>这是一个测试页面</h1>
+    <p>如果你能看到上方的黄色方框，说明fixed定位工作正常。</p>
+  </div>
+
+  <script>
+    console.log('Test page loaded');
+    console.log('Test element exists:', document.querySelector('.test-box') !== null);
+  </script>
+</body>
+</html>

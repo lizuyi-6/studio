@@ -1,12 +1,25 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-import { Hexagon, Layers, Box, Cpu, Menu, X, Github, Globe, Mail, Zap, Compass, GitBranch, Terminal, Figma, Plus, Database, Layout, Server, Code, Braces, Cloud, Command, Settings } from 'lucide-react';
+import { Hexagon, Layers, Box, Cpu, Menu, X, Github, Globe, Mail, Zap, Compass, GitBranch, Terminal, Figma, Database, Layout, Server, Code, Braces, Cloud, Command, Settings, Linkedin } from 'lucide-react';
 
 // 懒加载 TeamPage
 const TeamPage = lazy(() => import('./TeamPage'));
 
-// 导入 SpaceBackground
+// 导入背景组件
 import { SpaceBackground } from './SpaceBackground';
+import { SpaceJourney } from './SpaceJourney';
+
+// 导入装饰组件
+import {
+  DataFlowTop,
+  CornerDecoration,
+  FloatingTechIcon,
+  GridBackground,
+  PulseRing,
+  HUDIndicator,
+  CircuitDecoration,
+  RippleEffect
+} from './Decorations';
 
 // --- 全局样式注入 ---
 const GlobalStyles = () => (
@@ -265,33 +278,7 @@ const NetworkDiagram = () => (
 
 // --- 装饰性背景组件 ---
 // --- 装饰性背景组件 (Interactive) ---
-const SystemHUD = () => (
-    <div className="absolute inset-0 pointer-events-none z-50 overflow-hidden hidden md:block">
-        {/* Top Left Corner */}
-        <div className="absolute top-8 left-8 w-16 h-16 border-t-2 border-l-2 border-white/20 rounded-tl-lg"></div>
-        <div className="absolute top-12 left-12 text-[10px] font-mono text-white/30 tracking-widest">SYS.READY</div>
 
-        {/* Top Right Corner */}
-        <div className="absolute top-8 right-8 w-16 h-16 border-t-2 border-r-2 border-white/20 rounded-tr-lg"></div>
-        <div className="absolute top-12 right-12 text-[10px] font-mono text-white/30 tracking-widest">
-            <span className="animate-pulse text-[#0066FF]">●</span> REC
-        </div>
-
-        {/* Bottom Left Corner */}
-        <div className="absolute bottom-8 left-8 w-16 h-16 border-b-2 border-l-2 border-white/20 rounded-bl-lg"></div>
-        <div className="absolute bottom-12 left-12 text-[10px] font-mono text-white/30 tracking-widest">COORDS: 44.22.91</div>
-
-        {/* Bottom Right Corner */}
-        <div className="absolute bottom-8 right-8 w-16 h-16 border-b-2 border-r-2 border-white/20 rounded-br-lg"></div>
-
-        {/* Center Crosshair */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-white/5 rounded-full opacity-20"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-white/30"></div>
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1px] bg-white/30"></div>
-        </div>
-    </div>
-);
 
 const CodeFragments = () => {
     // 随机代码片段
@@ -709,7 +696,7 @@ const TechStackSection = () => (
                     className="tech-card p-10 rounded-2xl bg-black/50"
                 >
                     <div className="w-14 h-14 bg-white/10 rounded items-center justify-center flex mb-6">
-                        {/* <Layers size={28} className="text-white" /> */}
+                        <Layers size={28} className="text-white" />
                     </div>
                     <h3 className="text-3xl md:text-4xl font-bold mb-6">工业物联网</h3>
                     <p className="text-gray-400 leading-relaxed mb-8">
@@ -728,7 +715,7 @@ const TechStackSection = () => (
                 >
                     <div className="absolute top-0 right-0 p-3 bg-[#0066FF] text-xs font-bold">CORE</div>
                     <div className="w-14 h-14 bg-[#0066FF] rounded items-center justify-center flex mb-6 shadow-lg shadow-[#0066FF]/30">
-                        {/* <Cpu size={28} className="text-white" /> */}
+                        <Cpu size={28} className="text-white" />
                     </div>
                     <h3 className="text-3xl md:text-4xl font-bold mb-6">边缘计算</h3>
                     <p className="text-gray-300 leading-relaxed mb-8">
@@ -746,7 +733,7 @@ const TechStackSection = () => (
                     className="tech-card p-10 rounded-2xl bg-black/50"
                 >
                     <div className="w-14 h-14 bg-white/10 rounded items-center justify-center flex mb-6">
-                        {/* <Box size={28} className="text-white" /> */}
+                        <Box size={28} className="text-white" />
                     </div>
                     <h3 className="text-3xl md:text-4xl font-bold mb-6">极致性能体验</h3>
                     <p className="text-gray-400 leading-relaxed mb-8">
@@ -759,30 +746,105 @@ const TechStackSection = () => (
     </section>
 );
 
-const Footer = () => (
-    <footer className="py-16 border-t border-white/10 bg-black text-sm text-gray-500 relative z-20">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-            <div className="flex items-center gap-4">
-                <Logo className="h-10 w-10" />
-                <div>
-                    <div className="mb-2 font-bold text-white tracking-wide uppercase text-lg">Aether Studio</div>
-                    <p className="text-xs opacity-60">Engineered for Precision.</p>
-                </div>
-            </div>
+const Footer = ({ onNavigate }) => {
+  const navLinks = [
+    { label: '关于', href: '#about' },
+    { label: '优势', href: '#values' },
+    { label: '方案', href: '#solutions' },
+    { label: '团队', href: '#team' },
+  ];
 
-            <div className="flex flex-wrap gap-8">
-                <a href="#" className="hover:text-white transition-colors">服务条款</a>
-                <a href="#" className="hover:text-white transition-colors">隐私政策</a>
-                <a href="#" className="hover:text-white transition-colors">关于我们</a>
-                <a href="#" className="hover:text-white transition-colors">联系方式</a>
+  const socialLinks = [
+    { icon: Github, href: 'https://github.com/lizuyi-6', label: 'GitHub' },
+    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { icon: Mail, href: 'mailto:hello@aether.io', label: 'Email' },
+  ];
+
+  const handleNav = (e, href) => {
+    e.preventDefault();
+    if (!onNavigate) return;
+    
+    if (href === '#about') onNavigate('about');
+    else if (href === '#values') onNavigate('home');
+    else if (href === '#solutions') onNavigate('solutions');
+    else if (href === '#team') onNavigate('team');
+  };
+
+  return (
+    <footer className="bg-black border-t border-white/5 relative z-20">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          <div className="lg:col-span-1">
+            <div className="flex items-center gap-3 mb-6">
+              <Logo className="h-10 w-10" />
+              <span className="text-white font-semibold text-lg">Aether Studio</span>
             </div>
+            <p className="text-white/40 text-sm leading-relaxed mb-6">
+              专注于高性能 Web 架构与工业级交互设计，为企业提供端到端的数字化解决方案。
+            </p>
+            <div className="flex gap-3">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a key={social.label} href={social.href} aria-label={social.label}
+                    className="w-10 h-10 bg-white/5 flex items-center justify-center text-white/40 hover:bg-[#0066FF] hover:text-white transition-all">
+                    <Icon className="w-4 h-4" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">导航</h4>
+            <ul className="space-y-3">
+              {navLinks.map((link) => (
+                <li key={link.label}>
+                  <button onClick={(e) => handleNav(e, link.href)} className="text-white/40 hover:text-white transition-colors text-sm">
+                    {link.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">服务</h4>
+            <ul className="space-y-3">
+              {['Web 开发', 'UI/UX 设计', '技术咨询', '性能优化'].map((service) => (
+                <li key={service}>
+                  <span className="text-white/40 text-sm">{service}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">联系</h4>
+            <div className="space-y-3 text-sm text-white/40">
+              <p>北京市海淀区中关村科技园</p>
+              <p>A座 15层</p>
+              <p className="pt-2">
+                <a href="mailto:hello@aether.io" className="hover:text-[#0066FF] transition-colors">hello@aether.io</a>
+              </p>
+              <p>
+                <a href="tel:+86-400-888-8888" className="hover:text-[#0066FF] transition-colors">400-888-8888</a>
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="container mx-auto px-6 mt-8 pt-8 border-t border-white/5 text-xs text-gray-600 flex justify-between">
-            <span>&copy; 2025 Aether Studio. All rights reserved.</span>
-            {/* 已移除 ICP 备案号占位符，以免混淆 */}
+
+        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-white/30 text-sm">© 2025 Aether Studio. All rights reserved.</p>
+          <div className="flex gap-6">
+            <a href="#" className="text-white/30 hover:text-white/60 text-sm transition-colors">隐私政策</a>
+            <a href="#" className="text-white/30 hover:text-white/60 text-sm transition-colors">服务条款</a>
+          </div>
         </div>
+      </div>
     </footer>
-);
+  );
+};
 
 // --- 页面视图组件 ---
 
@@ -794,99 +856,9 @@ const pageVariants = {
 
 
 
-const CentralGyro = () => (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0">
-        {/* Orbiting Status Panels (Active) */}
-        <div className="absolute inset-0 z-20">
-            {/* Panel 1: System Scan */}
-            <motion.div
-                className="absolute top-1/2 left-1/2 w-40 p-3 bg-black/40 border border-[#0066FF]/30 backdrop-blur-sm rounded-lg"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                style={{ originX: "0px", originY: "180px" }} // Orbit radius hack
-            >
-                <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] text-gray-400 font-mono">SYS_SCAN</span>
-                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
-                </div>
-                <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                        className="h-full bg-[#0066FF]"
-                        animate={{ width: ["0%", "100%", "0%"] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                    />
-                </div>
-                <div className="text-[9px] text-[#0066FF] mt-1 font-mono">Process: 98%</div>
-            </motion.div>
 
-            {/* Panel 2: Net Traffic */}
-            <motion.div
-                className="absolute top-1/2 left-1/2 w-32 p-2 bg-black/40 border border-white/10 backdrop-blur-sm rounded-lg"
-                animate={{ rotate: -360 }}
-                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                style={{ originX: "0px", originY: "-240px" }} // Orbit radius hack
-            >
-                <div className="text-[9px] text-gray-400 font-mono mb-1">NET_TRAFFIC</div>
-                <div className="flex justify-between items-end h-6 gap-0.5">
-                    {[40, 70, 30, 80, 50, 90, 60].map((h, i) => (
-                        <motion.div
-                            key={i}
-                            className="bg-[#0066FF]/50 w-full rounded-t-sm"
-                            animate={{ height: [`${h / 2}%`, `${h}%`, `${h / 2}%`] }}
-                            transition={{ duration: 2, repeat: Infinity, delay: i * 0.1 }}
-                        />
-                    ))}
-                </div>
-            </motion.div>
 
-            {/* Panel 3: Core Security */}
-            <motion.div
-                className="absolute top-1/2 left-1/2 w-28 p-2 bg-black/40 border border-white/10 backdrop-blur-sm rounded-lg"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                style={{ originX: "-200px", originY: "0px" }} // Orbit radius hack
-            >
-                <div className="flex items-center gap-2 mb-1">
-                    <div className="border border-white/30 rounded p-0.5"><Zap size={8} className="text-yellow-400" /></div>
-                    <span className="text-[9px] text-white">PWR_LVL</span>
-                </div>
-                <div className="text-xl font-mono text-white font-bold tracking-tighter">98.4<span className="text-xs text-gray-400">%</span></div>
-            </motion.div>
-        </div>
-        {/* Core Ring 1 - Fast Rotate */}
-        <motion.div
-            className="absolute rounded-full border border-dashed border-[#0066FF] w-[400px] h-[400px] opacity-60 shadow-[0_0_15px_#0066FF40]"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-
-        {/* Core Ring 2 - Reverse Slower */}
-        <motion.div
-            className="absolute rounded-full border border-white/20 w-[600px] h-[600px] shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-            style={{ top: "50%", left: "50%", x: "-50%", y: "-50%" }}
-            animate={{ rotate: -360 }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-        >
-            <div className="absolute top-0 left-1/2 w-2 h-2 bg-white/50 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-white/50 rounded-full -translate-x-1/2 translate-y-1/2"></div>
-        </motion.div>
-
-        {/* Outer Ring 3 - Pulse & Scale */}
-        <motion.div
-            className="absolute rounded-full border-2 border-[#0066FF]/20 w-[800px] h-[800px]"
-            style={{ top: "50%", left: "50%", x: "-50%", y: "-50%" }}
-            animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Crosshairs inside */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Plus size={64} className="text-[#0066FF] opacity-80 drop-shadow-[0_0_8px_#0066FF]" strokeWidth={1} />
-        </div>
-    </div>
-);
-
-const HomeView = () => (
+const HomeView = ({ onNavigate }) => (
     <motion.div
         variants={pageVariants}
         initial="initial"
@@ -896,8 +868,11 @@ const HomeView = () => (
         // Removed snap attributes. Kept overflow-y-scroll for the container.
         className="relative h-screen overflow-y-scroll"
     >
-        {/* Fixed Background Elements - Space Background */}
-        <SpaceBackground />
+        {/* Fixed Background Elements - 动态太空之旅 + 静态背景 */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+            <SpaceBackground />
+            <SpaceJourney />
+        </div>
 
         {/* Stacking Sections (Card Deck Effect) */}
         <div className="relative z-10 text-center">
@@ -928,10 +903,9 @@ const HomeView = () => (
             >
                 {/* TechStack fills at least one screen */}
                 <div className="min-h-screen flex flex-col justify-center">
-                    <TechStackSection />
+                    <TechStackSection onNavigate={onNavigate} />
                 </div>
-                {/* Footer naturally follows flow */}
-                <Footer />
+                <Footer onNavigate={onNavigate} />
             </div>
         </div>
     </motion.div>
@@ -940,7 +914,7 @@ const HomeView = () => (
 // 为列表容器定一个 "Stagger" 变体
 
 
-const SolutionsView = () => (
+const SolutionsView = ({ onNavigate }) => (
     <div className="pt-32 pb-20 min-h-screen container mx-auto px-6">
         {/* <CyberGrid /> */}
         <div className="relative z-10">
@@ -1025,141 +999,184 @@ const SolutionsView = () => (
                 ))}
             </div>
         </div>
+
+        <Footer onNavigate={onNavigate} />
     </div>
 );
 
-// --- 4.0 Enterprise Tech Grid (Bento Style) ---
+// --- 4.0 Enterprise Tech Grid (Minimalist Style) ---
 
-const TechItem = ({ name, level }) => (
-    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-colors group cursor-default">
-        <div className="flex items-center gap-3">
-            <div className="text-gray-400 group-hover:text-white transition-colors">
-                {/* {icon} */}
+const TechItem = ({ name, level, icon }) => {
+    return (
+        <div className="group cursor-default relative py-1">
+            <div className="flex items-center justify-between mb-2 z-10 relative">
+                <div className="flex items-center gap-3">
+                    <div className="text-gray-500 group-hover:text-[#0066FF] transition-colors duration-300">
+                        {icon}
+                    </div>
+                    <span className="text-sm font-medium text-gray-400 group-hover:text-white transition-colors tracking-wide">
+                        {name}
+                    </span>
+                </div>
+                <div className="font-mono text-xs font-bold tracking-wider opacity-60 group-hover:opacity-100 transition-opacity text-gray-500 group-hover:text-[#0066FF]">
+                    {level}%
+                </div>
             </div>
-            <span className="text-sm font-medium text-gray-300 group-hover:text-white">{name}</span>
-        </div>
-        <div className="flex items-center gap-2">
-            <div className={`h-1.5 w-1.5 rounded-full ${level > 90 ? 'bg-emerald-500' : level > 80 ? 'bg-blue-500' : 'bg-gray-500'}`}></div>
-            <span className="text-xs font-mono text-gray-500">{level}%</span>
-        </div>
-    </div>
-);
 
-const TechCard = ({ title, items, className = "" }) => (
-    <div
-        className={`bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 hover:border-[#0066FF]/30 transition-colors duration-500 ${className}`}
+            {/* Minimalist Progress Bar */}
+            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden relative">
+                <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${level}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="h-full absolute top-0 left-0 bg-[#0066FF]"
+                />
+            </div>
+        </div>
+    );
+};
+
+const TechCard = ({ title, items, icon, className = "", delay = 0 }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: delay * 0.1 }}
+        whileHover={{ y: -5 }}
+        className={`bg-white/[0.02] border border-white/5 rounded-xl p-8 hover:bg-white/[0.04] transition-all duration-300 ${className}`}
     >
-        <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-lg bg-white/5 text-[#0066FF]">
-                {/* {icon} */}
+        <div className="flex items-center gap-4 mb-8">
+            <div className="p-3 bg-white/5 rounded-lg text-white/70">
+                {icon}
             </div>
-            <h3 className="text-lg font-bold text-white tracking-tight">{title}</h3>
+            <div>
+                <h3 className="text-xl font-bold text-white tracking-tight">{title}</h3>
+                <div className="h-0.5 w-8 bg-[#0066FF] mt-2" />
+            </div>
         </div>
-        <div className="space-y-1">
-            {items.map(item => (
+
+        <div className="space-y-6">
+            {items.map((item) => (
                 <TechItem key={item.name} {...item} />
             ))}
         </div>
-    </div>
+    </motion.div>
 );
 
-const TechView = () => {
+const TechView = ({ onNavigate }) => {
     return (
-        <div className="pt-32 pb-20 min-h-screen container mx-auto px-6">
-            {/* Header - Corporate Clean */}
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-white/10 pb-8">
-                <div>
-                    <h2 className="text-xs font-bold text-[#0066FF] tracking-[0.2em] uppercase mb-4">Technical Proficiency</h2>
-                    <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
-                        Engineering Stack.
-                    </h1>
-                </div>
-                <p className="text-gray-400 max-w-md mt-4 md:mt-0 text-sm leading-relaxed">
-                    A comprehensive overview of the technologies and tools used to build scalable, high-performance digital solutions.
-                </p>
-            </div>
-
-            {/* Bento Grid Layout */}
-            {/* Bento Grid Layout */}
-            {/* Bento Grid Layout */}
-            <div
-                className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        <div className="pt-32 pb-20 min-h-screen container mx-auto px-6 relative">
+             {/* Header - Minimalist Consistent Style */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="mb-20 flex flex-col md:flex-row justify-between items-end border-b border-white/10 pb-12"
             >
-                {/* 1. Core (Large) */}
+                <div className="max-w-2xl">
+                     <h2 className="text-3xl font-bold mb-6 flex items-center">
+                        工程体系 <span className="text-[#0066FF] ml-2 text-4xl font-light">/</span>
+                    </h2>
+                    <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+                        技术武器库
+                    </h1>
+                     <p className="text-gray-400 text-lg leading-relaxed max-w-xl">
+                        交付全栈式高性能解决方案。
+                        从底层硬件优化到像素级交互界面，我们确保每一行代码都精准执行。
+                    </p>
+                </div>
+
+                {/* Simple Intro - No Stats */}
+                <div className="text-right hidden md:block">
+                     <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
+                        &quot;工欲善其事，必先利其器。<br/>严选前沿技术，构建极致体验。&quot;
+                    </p>
+                </div>
+            </motion.div>
+
+            {/* Bento Grid Layout - Command Deck Style */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 relative z-10">
+                {/* Top Row: Strategy & Foundation */}
+                {/* 1. Core Foundations (Left, Wide) */}
                 <TechCard
-                    className="md:col-span-2"
+                    className="md:col-span-2 lg:col-span-6"
                     title="Core Foundations"
-                    icon={<Terminal size={20} />}
+                    icon={<Terminal size={24} />}
+                    delay={0}
                     items={[
-                        { name: "TypeScript", level: 95, icon: <Code size={16} /> },
-                        { name: "JavaScript (ESNext)", level: 98, icon: <Braces size={16} /> },
+                        { name: "TypeScript", level: 98, icon: <Code size={16} /> },
+                        { name: "JavaScript (ESNext)", level: 99, icon: <Braces size={16} /> },
                         { name: "Python", level: 85, icon: <Command size={16} /> },
                         { name: "Rust / C++", level: 75, icon: <Cpu size={16} /> }
                     ]}
                 />
 
-                {/* 2. Frontend (Tall) */}
+                {/* 2. Design & Architecture (Right, Wide) */}
                 <TechCard
-                    className="md:col-span-1 md:row-span-2"
-                    title="Frontend Ecosystem"
-                    icon={<Layout size={20} />}
+                    className="md:col-span-2 lg:col-span-6"
+                    title="Design & Architecture"
+                    icon={<Figma size={24} />}
+                    delay={1}
                     items={[
-                        { name: "React", level: 95, icon: <Box size={16} /> },
-                        { name: "Next.js", level: 92, icon: <Globe size={16} /> },
-                        { name: "Vue.js", level: 90, icon: <Layers size={16} /> },
-                        { name: "Tailwind CSS", level: 98, icon: <Zap size={16} /> },
-                        { name: "Framer Motion", level: 88, icon: <Compass size={16} /> },
-                        { name: "Three.js / R3F", level: 70, icon: <Hexagon size={16} /> }
+                        { name: "Figma Design", level: 88, icon: <Figma size={16} /> },
+                        { name: "System Design", level: 92, icon: <Layers size={16} /> },
+                        { name: "Agile Workflow", level: 95, icon: <Menu size={16} /> },
+                        { name: "Tech Writing", level: 88, icon: <Mail size={16} /> }
                     ]}
                 />
 
-                {/* 3. Backend */}
+                {/* Bottom Row: Execution Layer */}
+                {/* 3. Frontend UX */}
                 <TechCard
-                    className="md:col-span-1"
+                    className="md:col-span-1 lg:col-span-4"
+                    title="Frontend UX"
+                    icon={<Layout size={24} />}
+                    delay={2}
+                    items={[
+                        { name: "React 19", level: 96, icon: <Box size={16} /> },
+                        { name: "Next.js 14", level: 94, icon: <Globe size={16} /> },
+                        { name: "Tailwind", level: 98, icon: <Zap size={16} /> },
+                        { name: "Framer Motion", level: 92, icon: <Compass size={16} /> }
+                    ]}
+                />
+
+                {/* 4. Backend Services */}
+                <TechCard
+                    className="md:col-span-1 lg:col-span-4"
                     title="Backend Services"
-                    icon={<Server size={20} />}
+                    icon={<Server size={24} />}
+                    delay={3}
                     items={[
-                        { name: "Node.js", level: 88, icon: <Server size={16} /> },
-                        { name: "PostgreSQL", level: 82, icon: <Database size={16} /> },
-                        { name: "GraphQL", level: 80, icon: <GitBranch size={16} /> },
-                        { name: "Redis", level: 75, icon: <Database size={16} /> }
+                        { name: "Node.js", level: 90, icon: <Server size={16} /> },
+                        { name: "PostgreSQL", level: 85, icon: <Database size={16} /> },
+                        { name: "GraphQL", level: 82, icon: <GitBranch size={16} /> },
+                        { name: "Redis", level: 80, icon: <Database size={16} /> }
                     ]}
                 />
 
-                {/* 4. Infrastructure */}
+                {/* 5. Cloud & DevOps */}
                 <TechCard
-                    className="md:col-span-1"
-                    title="Infra & DevOps"
-                    icon={<Cloud size={20} />}
+                    className="md:col-span-2 lg:col-span-4"
+                    title="Cloud & DevOps"
+                    icon={<Cloud size={24} />}
+                    delay={4}
                     items={[
-                        { name: "AWS", level: 80, icon: <Cloud size={16} /> },
-                        { name: "Docker", level: 85, icon: <Box size={16} /> },
-                        { name: "CI/CD Actions", level: 78, icon: <Settings size={16} /> },
-                        { name: "Vercel / Edge", level: 90, icon: <Globe size={16} /> }
+                        { name: "Docker/K8s", level: 88, icon: <Box size={16} /> },
+                        { name: "AWS Services", level: 82, icon: <Cloud size={16} /> },
+                        { name: "GitHub Actions", level: 90, icon: <Settings size={16} /> },
+                        { name: "Vercel Edge", level: 94, icon: <Globe size={16} /> }
                     ]}
                 />
-
-                {/* 5. Design & Tools (Large) */}
-                <TechCard
-                    className="md:col-span-2"
-                    title="Design & Workflow"
-                    icon={<Figma size={20} />}
-                    items={[
-                        { name: "Figma", level: 85, icon: <Figma size={16} /> },
-                        { name: "System Architecture", level: 88, icon: <Layers size={16} /> },
-                        { name: "Agile / Linear", level: 90, icon: <Menu size={16} /> },
-                        { name: "Technical Writing", level: 85, icon: <Mail size={16} /> }
-                    ]}
-                />
-
             </div>
+            <Footer onNavigate={onNavigate} />
         </div>
     );
 };
 
 
 
-const AboutView = () => (
+const AboutView = ({ onNavigate }) => (
     <div className="pt-32 pb-20 min-h-screen container mx-auto px-6 relative">
         {/* <CyberGrid /> */}
         <div className="relative z-10">
@@ -1268,7 +1285,7 @@ const AboutView = () => (
                             key={phase.step}
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }} // FIX: Ensure consistency
+                            viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
                             className="group relative border-r border-b md:border-b-0 border-white/10 p-8 hover:bg-white/[0.02] transition-colors"
                         >
@@ -1283,6 +1300,7 @@ const AboutView = () => (
                 </div>
             </div>
         </div>
+        <Footer onNavigate={onNavigate} />
     </div>
 );
 
@@ -1292,10 +1310,10 @@ export default function App() {
     // 简单的路由/视图渲染逻辑 (Simple Routing Logic)
     const renderView = () => {
         switch (currentView) {
-            case 'home': return <HomeView key="home" />;
-            case 'solutions': return <SolutionsView key="solutions" />;
-            case 'tech': return <TechView key="tech" />;
-            case 'about': return <AboutView key="about" />;
+            case 'home': return <HomeView key="home" onNavigate={setCurrentView} />;
+            case 'solutions': return <SolutionsView key="solutions" onNavigate={setCurrentView} />;
+            case 'tech': return <TechView key="tech" onNavigate={setCurrentView} />;
+            case 'about': return <AboutView key="about" onNavigate={setCurrentView} />;
             case 'team': return (
                 <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center text-white">加载中...</div>}>
                     <TeamPage onBack={() => setCurrentView('home')} />
@@ -1324,13 +1342,48 @@ export default function App() {
             <CyberGrid />
             {currentView !== 'team' && <Navbar currentView={currentView} onViewChange={setCurrentView} />}
 
+            {/* Home页面的装饰性SVG动画 - 在App级别渲染以避免motion.div的transform影响fixed定位 */}
+            {currentView === 'home' && (
+                <>
+                    {/* 背景装饰 */}
+                    <GridBackground opacity={0.3} />
+
+                    {/* 顶部和角落装饰 */}
+                    <DataFlowTop />
+                    <CornerDecoration position="top-left" />
+                    <CornerDecoration position="top-right" />
+                    <CornerDecoration position="bottom-left" />
+                    <CornerDecoration position="bottom-right" />
+
+                    {/* 浮动技术图标 */}
+                    <FloatingTechIcon x="10%" y="20%" size={20} delay={0} />
+                    <FloatingTechIcon x="85%" y="15%" size={16} delay={1} />
+                    <FloatingTechIcon x="15%" y="70%" size={24} delay={2} />
+                    <FloatingTechIcon x="80%" y="75%" size={18} delay={3} />
+
+                    {/* 电路板装饰 */}
+                    <CircuitDecoration position="left" />
+                    <CircuitDecoration position="right" />
+
+                    {/* HUD指示器 */}
+                    <HUDIndicator label="SYS" value="ONLINE" x="20px" y="150px" />
+                    <HUDIndicator label="NET" value="CONNECTED" x="20px" y="170px" />
+
+                    {/* 脉冲环效果 */}
+                    <PulseRing x="30%" y="25%" size={60} delay={0} />
+                    <PulseRing x="70%" y="60%" size={80} delay={2} />
+
+                    {/* 波纹效果 */}
+                    <RippleEffect x="50%" y="40%" delay={0} />
+                    <RippleEffect x="20%" y="70%" delay={3} />
+                </>
+            )}
+
             {/* 页面内容区域 (AnimatePresence 处理离场动画) */}
             <AnimatePresence mode="wait">
                 {renderView()}
             </AnimatePresence>
 
-            {/* Global Footer: Only show if NOT on Home or Team (because they have their own internal footer) */}
-            {currentView !== 'home' && currentView !== 'team' && <Footer />}
         </div>
     );
 }
