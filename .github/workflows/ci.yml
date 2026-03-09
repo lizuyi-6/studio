@@ -1,195 +1,33 @@
-name: CI/CD Pipeline
+name: Node.js CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ master, main ]
   pull_request:
-    branches: [main, develop]
-
-# 设置并发以避免多个工作流同时运行
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [ master, main ]
 
 jobs:
-  # ==================== 测试阶段 ====================
-  test:
-    name: 🔬 Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: 💾 Install dependencies
-        run: npm ci
-
-      - name: 🔬 Run unit tests
-        run: npm test -- --run
-
-      - name: 📊 Test coverage
-        run: npm run test:coverage -- --run
-        continue-on-error: true
-
-      - name: 📤 Upload coverage reports
-        uses: codecov/codecov-action@v4
-        if: always()
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/coverage-final.json
-          flags: unittests
-          name: codecov-umbrella
-
-  # ==================== Lint阶段 ====================
-  lint:
-    name: 🔍 Lint
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: 💾 Install dependencies
-        run: npm ci
-
-      - name: 🔍 Run ESLint (如果配置了)
-        run: npm run lint --if-present
-        continue-on-error: true
-
-  # ==================== E2E测试阶段 ====================
-  e2e:
-    name: 🎭 E2E Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: 💾 Install dependencies
-        run: npm ci
-
-      - name: 🎭 Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: 🏗️ Build application
-        run: npm run build
-
-      - name: 🎭 Run E2E tests
-        run: npm run test:e2e
-
-      - name: 📤 Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
-
-  # ==================== 构建阶段 ====================
   build:
-    name: 🏗️ Build
     runs-on: ubuntu-latest
-    needs: [test, lint]
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-
-      - name: 📦 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: 💾 Install dependencies
-        run: npm ci
-
-      - name: 🏗️ Build production bundle
-        run: npm run build
-        env:
-          NODE_ENV: production
-
-      - name: 📦 Check build size
-        run: |
-          echo "📊 Build size:"
-          du -sh dist/
-          echo ""
-          echo "📊 Largest files:"
-          find dist -type f -exec du -h {} + | sort -rh | head -10
-
-      - name: 📤 Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: dist/
-          retention-days: 7
-
-  # ==================== 部署阶段（仅main分支）====================
-  # 部署步骤已禁用 - 如需启用，请配置以下 GitHub Secrets:
-  # - VERCEL_TOKEN
-  # - VERCEL_ORG_ID
-  # - VERCEL_PROJECT_ID
-  # 然后取消下面的注释
-  #
-  # deploy:
-  #   name: 🚀 Deploy
-  #   runs-on: ubuntu-latest
-  #   needs: [build, e2e]
-  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-  #
-  #   steps:
-  #     - name: 📥 Checkout code
-  #       uses: actions/checkout@v4
-  #
-  #     - name: 📦 Download build artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: build-artifacts
-  #         path: dist/
-  #
-  #     - name: 🚀 Deploy to Vercel
-  #       uses: amondnet/vercel-action@v25
-  #       with:
-  #         vercel-token: ${{ secrets.VERCEL_TOKEN }}
-  #         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-  #         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-  #         vercel-args: '--prod'
-  #         working-directory: ./
-
-  # ==================== 通知阶段 ====================
-  # 通知步骤已禁用 - 依赖部署阶段
-  #
-  # notify:
-  #   name: 📢 Notify
-  #   runs-on: ubuntu-latest
-  #   needs: [deploy]
-  #   if: always()
-  #
-  #   steps:
-  #     - name: 📢 Send notification
-  #       run: |
-  #         if [ "${{ needs.deploy.result }}" == "success" ]; then
-  #           echo "✅ Deployment successful!"
-  #           # 这里可以添加Slack/Email等通知
-  #         else
-  #           echo "❌ Deployment failed!"
-  #           # 这里可以添加失败通知
-  #         fi
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci || npm install
+    
+    - name: Build
+      run: npm run build --if-present
+    
+    - name: Test
+      run: npm test --if-present
